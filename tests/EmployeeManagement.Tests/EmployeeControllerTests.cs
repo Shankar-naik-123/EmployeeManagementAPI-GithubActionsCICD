@@ -35,9 +35,8 @@ namespace EmployeeManagement.Tests
         {
             var controller = new EmployeeController();
             var result = controller.HealthCheck();
-            
-            Assert.Equal("Sever is healthy!",  ((OkObjectResult)result).Value);
-           ;
+
+            Assert.Equal("Sever is healthy!", ((OkObjectResult)result).Value);
         }
     }
 }
