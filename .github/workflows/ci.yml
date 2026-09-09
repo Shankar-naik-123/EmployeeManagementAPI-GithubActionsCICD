@@ -46,9 +46,11 @@ jobs:
           --collect:"XPlat Code Coverage"
           --logger 'trx' 
       - name: Sonar analysis end
+        env:
+          SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
         run: |
           dotnet sonarscanner end \
-          /d:sonar.token=${{secrets.SONAR_TOKEN}} 
+          /d:sonar.token="$SONAR_TOKEN"
       - name: publish test results
         if: always()
         uses: actions/upload-artifact@v4
