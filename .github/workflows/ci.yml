@@ -18,7 +18,8 @@ jobs:
       
       - name: checkout code
         uses: actions/checkout@v4
-      
+        with:
+          fetch-depth: 0
       - name: Install Dotnet sonar scanner
         run: dotnet tool install --global dotnet-sonarscanner
       - name: Sonar scanner beggin analysis
@@ -26,8 +27,8 @@ jobs:
           SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
         run: |
           dotnet sonarscanner begin \
-          /k:"{{vars.SONAR_PROJECT_KEY}}" \
-          /o:"{{vars.SONAR_ORGANIZATION_KEY}}" \
+          /k:$"{{vars.SONAR_PROJECT_KEY}}" \
+          /o:$"{{vars.SONAR_ORGANIZATION_KEY}}" \
           /d:sonar.token="$SONAR_TOKEN" \
           /d:sonar.host.url="https://sonarcloud.io"
           
