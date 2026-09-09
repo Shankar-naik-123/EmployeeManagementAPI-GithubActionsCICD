@@ -30,7 +30,9 @@ jobs:
           /k:"${{vars.SONAR_PROJECT_KEY}}" \
           /o:"${{vars.SONAR_ORGANIZATION_KEY}}" \
           /d:sonar.token="$SONAR_TOKEN" \
-          /d:sonar.host.url="https://sonarcloud.io"
+          /d:sonar.host.url="https://sonarcloud.io" \
+           /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+          
           
       - name: Restore packages
         run: dotnet restore
@@ -39,12 +41,13 @@ jobs:
         run: dotnet build --no-restore --configuration ${{env.build-configuration}}
           
       - name: Test the solution
-        run: >
-          dotnet test 
-          --no-build 
-          --configuration ${{env.build-configuration}}
-          --collect:"XPlat Code Coverage"
-          --logger 'trx' 
+        run: |
+          dotnet test \
+          --no-build \
+          --configuration ${{env.build-configuration}} \
+          --collect:"XPlat Code Coverage" \
+          --logger 'trx' \
+          -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
       - name: Sonar analysis end
         env:
           SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
@@ -63,6 +66,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage
-          path: "**/coverage.cobertura.xml"      
+          path: "**/coverage.opencover.xml"      
           
   
