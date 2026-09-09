@@ -38,10 +38,10 @@ namespace EmployeeManagement.API.Controllers
             return Ok("Created!");
         }
 
-        [HttpGet("/health")]
-        public IActionResult HealthCheck()
+        [HttpGet("/healthcheck")]
+        public IActionResult  HealthCheck()
         {
-           return Ok("Sever is healthy"); 
+           return  Ok("Sever is healthy!"); 
         }
     }
 }
