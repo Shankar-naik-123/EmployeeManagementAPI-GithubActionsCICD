@@ -3,7 +3,7 @@ on:
     branches:
       - master
 
-name: "Github CI CD"
+name: "employee-ci"
 env:
   dotnet-version: '8.0.x'
   build-configuration: 'Release'
@@ -68,4 +68,11 @@ jobs:
           name: code-coverage
           path: "**/coverage.opencover.xml"      
           
-  
+      - name: publish project
+        run: dotnet publish --no-build --configuration ${{env.build-configuration}} --output ./publish
+        
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: employee-api
+          path: ./publish

@@ -1,0 +1,43 @@
+name: "employee-cd"
+on:
+  workflow_run:
+    workflows:
+      - "employee-ci"
+    types:
+      - completed
+
+jobs:
+  deploy-dev:
+    name: deploy to development
+    if: "${{github.event.workflow_run.conclusion=='success'}}"
+    runs-on: ubuntu-latest
+    environment: Dev
+    permissions:
+      actions: read
+      id-token: write
+    steps:
+      # download the artifact of current CI run
+      - name: download the artifact
+        env:
+          GH_TOKEN: ${{github.token}}
+          RUN_ID: ${{github.event.workflow_run.id}}
+        run: |
+          mkdir -p ./publish
+          
+          gh run download ${{env.RUN_ID}} \
+          --repository ${{github.repository}} \
+          --name "employee-api" \
+          --dir ./publish
+          
+      - name: Authenticate to Azure
+        uses: azure/login@6b2479350c18efb671ae53ec394f6f28659d6d0c
+        with:
+          client-id: ${{vars.ClientID}} 
+          tenant-id: ${{vars.tenantId}} 
+          subscription-id: ${{vars.subscriptionid}}
+      
+      - name: Deploy to webApp
+        uses: azure/webapps-deploy@09ab6d09cc4c89657dd693ca63e414f6b3e9a7e6
+        with:
+          name: ${{vars.appname}}
+          package: ./publish
