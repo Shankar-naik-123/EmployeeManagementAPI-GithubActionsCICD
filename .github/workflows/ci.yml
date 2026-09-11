@@ -21,10 +21,8 @@ jobs:
         with:
           fetch-depth: 0
       - name: Install Dotnet sonar scanner
-        if: false
         run: dotnet tool install --global dotnet-sonarscanner
       - name: Sonar scanner beggin analysis
-        if: false
         env:
           SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
         run: |
@@ -51,7 +49,6 @@ jobs:
           --logger 'trx' \
           -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
       - name: Sonar analysis end
-        if: false
         env:
           SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
         run: |
