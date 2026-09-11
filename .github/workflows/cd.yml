@@ -5,6 +5,8 @@ on:
       - "employee-ci"
     types:
       - completed
+    branches:
+      - master
 
 jobs:
   deploy-dev:
