@@ -27,7 +27,7 @@ jobs:
           mkdir -p ./publish
           
           gh run download ${{env.RUN_ID}} \
-          --repository ${{github.repository}} \
+          --repo ${{github.repository}} \
           --name employee-api \
           --dir ./publish
           
