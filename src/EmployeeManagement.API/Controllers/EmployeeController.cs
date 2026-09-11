@@ -36,6 +36,7 @@ namespace EmployeeManagement.API.Controllers
             employees.Add(employeemodel);
 
             return Ok("Created!");
+            
         }
 
         [HttpGet("/healthcheck")]
