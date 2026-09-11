@@ -17,6 +17,7 @@ namespace EmployeeManagement.API.Controllers
         public IEnumerable<EmployeeModel> GetEmployees()
         {
             return employees;
+            
         }
 
 
@@ -36,6 +37,7 @@ namespace EmployeeManagement.API.Controllers
             employees.Add(employeemodel);
 
             return Ok("Created!");
+            
             
         }
 
