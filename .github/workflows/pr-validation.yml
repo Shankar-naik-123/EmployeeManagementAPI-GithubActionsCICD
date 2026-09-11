@@ -1,5 +1,5 @@
 on:
-  push:
+  pull_request:
     branches:
       - master
 
@@ -15,18 +15,31 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{env.dotnet-version}}
-      
+
       - name: checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-        
+      - name: Install Dotnet sonar scanner
+        run: dotnet tool install --global dotnet-sonarscanner
+      - name: Sonar scanner beggin analysis
+        env:
+          SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+        run: |
+          dotnet sonarscanner begin \
+          /k:"${{vars.SONAR_PROJECT_KEY}}" \
+          /o:"${{vars.SONAR_ORGANIZATION_KEY}}" \
+          /d:sonar.token="$SONAR_TOKEN" \
+          /d:sonar.host.url="https://sonarcloud.io" \
+           /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+
+
       - name: Restore packages
         run: dotnet restore
-          
+
       - name: build solution
         run: dotnet build --no-restore --configuration ${{env.build-configuration}}
-          
+
       - name: Test the solution
         run: |
           dotnet test \
@@ -35,26 +48,22 @@ jobs:
           --collect:"XPlat Code Coverage" \
           --logger 'trx' \
           -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-
+      - name: Sonar analysis end
+        env:
+          SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+        run: |
+          dotnet sonarscanner end \
+          /d:sonar.token="$SONAR_TOKEN"
       - name: publish test results
         if: always()
         uses: actions/upload-artifact@v4
-        with: 
+        with:
           name: test-results
           path: "**/*.trx"
-            
+
       - name: publish  the coverage results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage
-          path: "**/coverage.opencover.xml"      
-          
-      - name: publish project
-        run: dotnet publish --no-build --configuration ${{env.build-configuration}} --output ./publish
-        
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: employee-api
-          path: ./publish
+          path: "**/coverage.opencover.xml"
