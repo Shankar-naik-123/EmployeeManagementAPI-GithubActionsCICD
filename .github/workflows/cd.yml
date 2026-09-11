@@ -26,7 +26,7 @@ jobs:
           
           gh run download ${{env.RUN_ID}} \
           --repository ${{github.repository}} \
-          --name "employee-api" \
+          --name employee-api \
           --dir ./publish
           
       - name: Authenticate to Azure
