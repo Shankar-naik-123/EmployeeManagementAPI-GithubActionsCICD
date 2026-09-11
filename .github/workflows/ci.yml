@@ -3,7 +3,7 @@ on:
     branches:
       - master
 
-name: "Github CI CD"
+name: "employee-ci"
 env:
   dotnet-version: '8.0.x'
   build-configuration: 'Release'
