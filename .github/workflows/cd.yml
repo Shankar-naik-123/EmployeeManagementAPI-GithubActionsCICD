@@ -42,5 +42,5 @@ jobs:
       - name: Deploy to webApp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{vars.appname}}
+          app-name: ${{vars.APP_NAME}}
           package: ./publish
