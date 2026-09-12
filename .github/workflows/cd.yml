@@ -9,24 +9,25 @@ on:
       - master
 
 jobs:
-    deploy-dev:
-    name: deploy to development
-    if: "${{github.event.workflow_run.conclusion=='success'}}"
-    permissions:
-      actions: read
-      id-token: write
-      contents: read
-    uses: ./.github/workflows/deploy.yml
-    with:
-      environment: Dev
-      
+  deploy-dev:
+  name: deploy to development
+  if: "${{github.event.workflow_run.conclusion=='success'}}"
+  permissions:
+    actions: read
+    id-token: write
+    contents: read
+  uses: ./.github/workflows/deploy.yml
+  with:
+    environment: Dev
     
-    deploy-qa:
-      needs: deploy-dev
-      name: deploy to QA
-      permissions:
-        actions: read
-        id-token: write
-      uses: ./.github/workflows/deploy.yml
-      with:
-        environment: QA  
+  deploy-qa:
+  needs: deploy-dev
+  name: deploy to QA
+  permissions:
+    actions: read
+    id-token: write
+  uses: ./.github/workflows/deploy.yml
+  with:
+      environment: QA      
+    
+   
