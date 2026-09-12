@@ -17,6 +17,7 @@ jobs:
     permissions:
       actions: read
       id-token: write
+      contents: read
     steps:
       # download the artifact of current CI run
       - name: download the artifact
