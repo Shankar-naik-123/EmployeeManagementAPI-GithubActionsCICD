@@ -43,7 +43,7 @@ namespace EmployeeManagement.API.Controllers
         [HttpGet("/healthcheck")]
         public IActionResult  HealthCheck()
         {
-           return  Ok("Sever is healthy as hell yeah!"); 
+           return  Ok("Sever is healthy"); 
         }
     }
 }
