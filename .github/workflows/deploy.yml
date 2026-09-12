@@ -7,8 +7,8 @@ on:
         type: string
         
 jobs:
-  deploy-dev:
-    name: deploy to development
+  deploy:
+    name: deploy to ${{inputs.environment}}
     runs-on: ubuntu-latest
     environment: ${{inputs.environment}}
     permissions:
