@@ -17,7 +17,6 @@ namespace EmployeeManagement.API.Controllers
         public IEnumerable<EmployeeModel> GetEmployees()
         {
             return employees;
-            
         }
 
 
