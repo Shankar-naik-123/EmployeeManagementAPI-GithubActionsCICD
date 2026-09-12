@@ -23,7 +23,6 @@ namespace EmployeeManagement.API.Controllers
         [HttpPost("add")]
         public IActionResult AddEmployee([FromBody] EmployeeDto newEmployee)
         {
-            
             if (newEmployee == null)
                 return BadRequest();
             var employeemodel = new EmployeeModel
