@@ -1,0 +1,43 @@
+name: Reusable deploy workflow
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        
+jobs:
+  deploy-dev:
+    name: deploy to development
+    runs-on: ubuntu-latest
+    environment: ${{inputs.environment}}
+    permissions:
+      actions: read
+      id-token: write
+      contents: read
+    steps:
+      # download the artifact of current CI run
+      - name: download the artifact
+        env:
+          GH_TOKEN: ${{secrets.GH_PAT}}
+          RUN_ID: ${{github.event.workflow_run.id}}
+        run: |
+          mkdir -p ./publish
+
+          gh run download ${{env.RUN_ID}} \
+          --repo ${{github.repository}} \
+          --name employee-api \
+          --dir ./publish
+
+      - name: Authenticate to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{vars.ClientID}}
+          tenant-id: ${{vars.tenantId}}
+          subscription-id: ${{vars.subscriptionid}}
+
+      - name: Deploy to webApp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{vars.APP_NAME}}
+          package: ./publish  
