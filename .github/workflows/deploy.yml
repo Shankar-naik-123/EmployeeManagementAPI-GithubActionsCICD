@@ -19,7 +19,7 @@ jobs:
       # download the artifact of current CI run
       - name: download the artifact
         env:
-          GH_TOKEN: ${{secrets.GH_PAT}}
+          GH_TOKEN: ${{github.token}}
           RUN_ID: ${{github.event.workflow_run.id}}
         run: |
           mkdir -p ./publish
